@@ -19,7 +19,7 @@ public class MainLogoutController extends HttpServlet {
 	
 		session = request.getSession();
 		
-		session.setAttribute("login", false);
+		session.invalidate();
 		
 //		response.sendRedirect("/views/main");
 		

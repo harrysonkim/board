@@ -7,9 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import DBUtill.JDBCTemplate;
+import utill.Paging;
 import web.dao.face.BoardDao;
 import web.dto.Board;
 
@@ -121,5 +120,81 @@ public class BoardDaoImpl implements BoardDao{
 		return i;
 	}
 
+	@Override
+	public int selectCntAll(Connection conn) {
+
+		String sql = "";
+		sql += "SELECT count(*) FROM board";
+		
+		int count = 0;
+		
+		try {
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+		
+			while(rs.next()) {
+//				count = rs.getInt("count(*)");
+				count = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(ps);
+		}
+		
+		System.out.println("BoardDaoImpl selectCntAll() 반환값 : " + count);
+		
+		return count;
+	}
+
+	@Override
+	public List<Board> selectAll(Connection conn, Paging paging) {
+	
+		String sql = "";
+		sql += "SELECT * FROM ("
+				+ " SELECT rownum rnum, B.* FROM ("
+				+ "  SELECT"
+				+ "   boardno, title, userid, hit, write_date"
+				+ "  FROM board"
+				+ "  ORDER BY boardno DESC"
+				+ " )B"
+				+ " ) BOARD"
+				+ " WHERE rnum BETWEEN ? AND ?";
+		
+		List<Board> list = new ArrayList<>();
+		
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, paging.getStartNo());
+			ps.setInt(2, paging.getEndNo());
+			rs = ps.executeQuery();
+		
+			while(rs.next()) {
+				
+				Board b = new Board();
+				b.setBoardNo(rs.getInt("boardno"));
+				b.setTitle(rs.getString("title"));
+				b.setUserId(rs.getString("userid"));
+//				b.setContent(rs.getString("content"));
+				b.setHit(rs.getInt("hit"));
+				b.setwrite_Date(rs.getDate("write_date"));
+				
+				list.add(b);
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(ps);
+		}
+		
+		
+		System.out.println("BoardDaoImpl selectCntAll()" + list);
+		return list;
+	}
 
 }
