@@ -18,12 +18,15 @@
 	<div class="p-2 bg-light border">조회수 : <%= board.getHit() %></div>
 	<div class="p-2 bg-light border">작성일 : <%= board.getwrite_Date() %></div>
 </div>	
-
 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
 
 		<a href="/board/list"><button class="btn btn-primary">목록</button></a>
+
+<!-- 이거 되는지 확인하기!! -->
+	<c:if test="${ sessionScope.userid eq board.getUserId }">
 		<a href="/board/update?boardno=<%= board.getBoardNo() %>"><button class="btn btn-primary">수정</button></a>
 		<a href="/board/delete"><button class="btn btn-primary">삭제</button></a>
+	</c:if>
 	
 </div>
 
