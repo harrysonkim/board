@@ -33,18 +33,10 @@ public class BoardListController extends HttpServlet {
 		// 게시글 페이징 조회
 		List<Board> list = boardService.getList(paging);
 		
-		List<Board> board_list = boardService.getList();
-		
 		request.setAttribute("board_list", list);
 		
 		request.getRequestDispatcher("/WEB-INF/views/board/list.jsp").forward(request, response);
 		
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("/Board/list [GET]");
-	
-		response.sendRedirect("/board/view");
 	}
 
 }

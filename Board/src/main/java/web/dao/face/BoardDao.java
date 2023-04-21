@@ -3,10 +3,9 @@ package web.dao.face;
 import java.sql.Connection;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import utill.Paging;
 import web.dto.Board;
+import web.dto.BoardFile;
 
 public interface BoardDao {
 
@@ -31,5 +30,22 @@ public interface BoardDao {
 	 * @return 조회된 페이징 리스트
 	 */
 	public List<Board> selectAll(Connection conn, Paging paging);
+
+	public int getNextBoardNo(Connection conn);
+
+	public int insert(Connection conn, Board board);
+
+	public int selectBoardNo(Connection conn);
+
+	public int insertFile(Connection conn, BoardFile boardFile);
+
+	public Board selectByBoardNo(Connection conn, Board board);
+
+	public BoardFile selsectBoardFileByBordno(Connection conn, Board board);
+
+	public int update(Connection conn, Board board);
+
+	public int deleteFile(Connection conn, BoardFile boardFile);
+
 
 }

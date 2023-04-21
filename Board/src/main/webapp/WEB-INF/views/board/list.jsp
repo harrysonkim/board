@@ -3,6 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <% List<Board> list = (List<Board>) request.getAttribute("board_list"); %>
 
 <jsp:include page="../layout/header.jsp"/>
@@ -37,6 +39,15 @@
 </table>
 
 </div>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+<c:if test="${login eq true }">
+	<a href="/board/write"><button type="button" class="btn btn-primary">글쓰기</button></a>
+</c:if>
+<c:if test="${empty login }">
+	<a href="/views/main"><button type="button" class="btn btn-primary">글쓰기</button></a>
+</c:if>
+</div>
+
 
 <jsp:include page="../layout/paging.jsp"/>
 

@@ -15,42 +15,42 @@ import web.service.impl.MemberServiceImpl;
 @WebServlet("/member/login")
 public class MainLoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    HttpSession session = null;
+	HttpSession session = null;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		System.out.println("/member/login [GET]");
 
 		request.getRequestDispatcher("/WEB-INF/views/member/login.jsp").forward(request, response);
-	
+
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		System.out.println("/member/login [POST]");
 
 		session = request.getSession();
 
 		MemberService memberService = new MemberServiceImpl();
-		
+
 		Member memberLogin = memberService.getLoginMember(request);
 		boolean login = memberService.login(memberLogin);
 		System.out.println("로그인 성공 실패? " + login);
 		Member info = memberService.info(memberLogin);
-		
-		if ( login == true ) {
-		
-			session.setAttribute("login", login);
-			session.setAttribute("userid", info.getUserId() );
-			session.setAttribute("usernick", info.getUserNick() );
-			session.setAttribute("info", info);
-			
-			response.sendRedirect("/views/main");
-		
-		}else {
-			
-		session.setAttribute("login", login);
-		
-		request.getRequestDispatcher("/WEB-INF/views/member/login.jsp").forward(request, response);
-		}
-	}
 
+		if (login == true) {
+
+			session.setAttribute("login", login);
+			session.setAttribute("userid", info.getUserId());
+			session.setAttribute("usernick", info.getUserNick());
+			session.setAttribute("info", info);
+
+			response.sendRedirect("/views/main");
+			return;
+		}
+
+		session.setAttribute("login", login);
+
+		request.getRequestDispatcher("/WEB-INF/views/member/login.jsp").forward(request, response);
+	}
 }
